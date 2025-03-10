@@ -7,6 +7,7 @@ import (
 	"backend/internal/infra/env"
 	"backend/internal/infra/mysql"
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -31,13 +32,15 @@ func Start() error {
 		panic(err)
 	}
 
+	val := validator.New()
+
 	app := fiber.New()
 
 	v1 := app.Group("/api/v1")
 
 	productRepository := productrepository.NewProductMySQL(database)
 	productUseCase := productusecase.NewProductUsecase(productRepository)
-	producthandler.NewProductHandler(v1, productUseCase)
+	producthandler.NewProductHandler(v1, val, productUseCase)
 
 	return app.Listen(fmt.Sprintf(":%d", config.AppPort))
 

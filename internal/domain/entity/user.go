@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"backend/internal/domain/dto"
 	"github.com/google/uuid"
 	"time"
 )
@@ -16,4 +17,16 @@ type User struct {
 	CreatedAt   time.Time `gorm:"type:timestamp;default:CURRENT_TIMESTAMP"`
 	UpdatedAt   time.Time `gorm:"type:timestamp;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
 	GoogleID    string    `gorm:"type:varchar(100);not null"`
+}
+
+func (p User) ParseToDTO() dto.ResponseCreateUser {
+	return dto.ResponseCreateUser{
+		Name:        p.Name,
+		Email:       p.Email,
+		Password:    p.Password,
+		PhoneNumber: p.PhoneNumber,
+		Address:     p.Address,
+		Role:        p.Role,
+		GoogleID:    p.GoogleID,
+	}
 }

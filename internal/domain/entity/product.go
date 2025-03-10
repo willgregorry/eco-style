@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"backend/internal/domain/dto"
 	"github.com/google/uuid"
 	"time"
 )
@@ -19,4 +20,18 @@ type Product struct {
 	PhotoUrls       string    `gorm:"type:text"`
 	CreatedAt       time.Time `gorm:"type:timestamp;default:CURRENT_TIMESTAMP"`
 	UpdatedAt       time.Time `gorm:"type:timestamp;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+}
+
+func (p Product) ParseToDTO() dto.ResponseCreateProduct {
+	return dto.ResponseCreateProduct{
+		ProductName:     p.ProductName,
+		ProductBrand:    p.ProductBrand,
+		ProductMaterial: p.ProductMaterial,
+		ProductSize:     p.ProductSize,
+		Description:     p.Description,
+		Price:           p.Price,
+		Stock:           p.Stock,
+		Category:        p.Category,
+		Condition:       p.Condition,
+	}
 }
