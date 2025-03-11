@@ -9,7 +9,7 @@ import (
 
 type ProductUsecaseItf interface {
 	GetAllProducts() (*[]entity.Product, error)
-	CreateProduct(request dto.RequestCreateProduct) (dto.RequestCreateProduct, error)
+	CreateProduct(request dto.RequestCreateProduct) (dto.ResponseCreateProduct, error)
 }
 
 type ProductUsecase struct {

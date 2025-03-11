@@ -9,17 +9,26 @@ import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"os"
+	"strconv"
 )
 
 func Start() error {
 
 	config, err := env.New()
 	if err != nil {
-		panic(err)
+		config = &env.Env{
+			AppPort:    os.Getenv("APP_PORT"),
+			DBUsername: os.Getenv("DB_USERNAME"),
+			DBPassword: os.Getenv("DB_PASSWORD"),
+			DBHost:     os.Getenv("DB_HOST"),
+			DBPort:     os.Getenv("DB_PORT"),
+			DBName:     os.Getenv("DB_NAME"),
+		}
 	}
 
 	database, err := mysql.New(fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		config.DBUsername,
 		config.DBPassword,
 		config.DBHost,
@@ -42,6 +51,7 @@ func Start() error {
 	productUseCase := productusecase.NewProductUsecase(productRepository)
 	producthandler.NewProductHandler(v1, val, productUseCase)
 
-	return app.Listen(fmt.Sprintf(":%d", config.AppPort))
+	appPort, _ := strconv.Atoi(config.AppPort)
+	return app.Listen(fmt.Sprintf(":%d", appPort))
 
 }
