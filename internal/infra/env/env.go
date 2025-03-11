@@ -6,12 +6,12 @@ import (
 )
 
 type Env struct {
-	AppPort    int    `env:"APP_PORT"`
+	AppPort    string `env:"APP_PORT"`
 	DBUsername string `env:"DB_USERNAME"`
 	DBPassword string `env:"DB_PASSWORD"`
 	DBHost     string `env:"DB_HOST"`
 	DBName     string `env:"DB_NAME"`
-	DBPort     int    `env:"DB_PORT"`
+	DBPort     string `env:"DB_PORT"`
 }
 
 func New() (*Env, error) {

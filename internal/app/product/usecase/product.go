@@ -8,8 +8,8 @@ import (
 )
 
 type ProductUsecaseItf interface {
-	Perantara() string
-	CreateProduct(request dto.RequestCreateProduct) (dto.ResponseCreateProduct, error)
+	GetAllProducts() (*[]entity.Product, error)
+	CreateProduct(request dto.RequestCreateProduct) (dto.RequestCreateProduct, error)
 }
 
 type ProductUsecase struct {
@@ -22,9 +22,16 @@ func NewProductUsecase(productRepository repository.ProductMySQLItf) ProductUsec
 	}
 }
 
-func (u ProductUsecase) Perantara() string {
+func (u ProductUsecase) GetAllProducts() (*[]entity.Product, error) {
 
-	return u.ProductRepository.GetProducts()
+	products := new([]entity.Product)
+
+	err := u.ProductRepository.GetAllProducts(products)
+	if err != nil {
+		return nil, err
+	}
+
+	return products, nil
 
 }
 

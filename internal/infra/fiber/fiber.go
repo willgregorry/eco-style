@@ -2,7 +2,6 @@ package fiber
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"time"
 )
@@ -28,13 +27,8 @@ func CustomError(ctx *fiber.Ctx, err error) error {
 		code = e.Code
 	}
 
-	// Send custom error page
-	err = ctx.Status(code).SendFile(fmt.Sprintf("./%d.html", code))
-	if err != nil {
-		// In case the SendFile fails
-		return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
-	}
-
 	// Return from handler
-	return nil
+	return ctx.Status(code).JSON(fiber.Map{
+		"message": err.Error(),
+	})
 }

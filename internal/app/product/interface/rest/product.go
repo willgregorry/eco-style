@@ -5,6 +5,7 @@ import (
 	"backend/internal/domain/dto"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"net/http"
 )
 
 type ProductHandler struct {
@@ -27,7 +28,10 @@ func NewProductHandler(routerGroup fiber.Router, validator *validator.Validate, 
 
 func (h *ProductHandler) GetAllProducts(ctx *fiber.Ctx) error {
 
-	res := h.ProductUseCase.Perantara()
+	res, err := h.ProductUseCase.GetAllProducts()
+	if err != nil {
+		return err
+	}
 
 	return ctx.JSON(fiber.Map{
 		"message": res,
@@ -54,7 +58,7 @@ func (h *ProductHandler) CreateProduct(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.JSON(fiber.Map{
+	return ctx.Status(http.StatusOK).JSON(fiber.Map{
 		"message": "Product created successfully",
 		"payload": res,
 	})

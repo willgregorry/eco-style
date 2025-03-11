@@ -23,3 +23,15 @@ type ResponseCreateProduct struct {
 	Category        string `json:"category"`
 	Condition       string `json:"condition"`
 }
+
+type ResponseGetProduct struct {
+	ProductName     string `json:"product_name"`
+	ProductBrand    string `json:"product_brand"`
+	ProductMaterial string `json:"product_material"`
+	ProductSize     string `json:"product_size"`
+	Description     string `json:"description"`
+	Price           int64  `json:"price"`
+	Stock           int8   `json:"stock"`
+	Category        string `json:"category"`
+	Condition       string `json:"condition"`
+}
