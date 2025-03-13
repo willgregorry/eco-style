@@ -123,6 +123,8 @@ func (h ProductHandler) DeleteProduct(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return nil
+	return ctx.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Product deleted successfully",
+	})
 
 }
