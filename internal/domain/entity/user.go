@@ -14,19 +14,21 @@ type User struct {
 	PhoneNumber string    `gorm:"type:varchar(100);not null"`
 	Address     string    `gorm:"type:varchar(100);not null"`
 	Role        string    `gorm:"type:varchar(100);not null"`
+	IsAdmin     bool      `gorm:"type:boolean;not null"`
 	CreatedAt   time.Time `gorm:"type:timestamp;default:CURRENT_TIMESTAMP"`
 	UpdatedAt   time.Time `gorm:"type:timestamp;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
 	GoogleID    string    `gorm:"type:varchar(100);not null"`
 }
 
-func (p User) ParseToDTO() dto.ResponseCreateUser {
-	return dto.ResponseCreateUser{
+func (p User) ParseToDTO() dto.RegisterUser {
+	return dto.RegisterUser{
 		Name:        p.Name,
 		Email:       p.Email,
 		Password:    p.Password,
 		PhoneNumber: p.PhoneNumber,
 		Address:     p.Address,
 		Role:        p.Role,
+		IsAdmin:     p.IsAdmin,
 		GoogleID:    p.GoogleID,
 	}
 }

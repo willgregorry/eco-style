@@ -3,6 +3,7 @@ package rest
 import (
 	productusecase "backend/internal/app/product/usecase"
 	"backend/internal/domain/dto"
+	"backend/internal/middleware"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -12,21 +13,24 @@ import (
 type ProductHandler struct {
 	Validator      *validator.Validate
 	ProductUseCase productusecase.ProductUsecaseItf
+	Middleware     middleware.MiddlewareI
 }
 
-func NewProductHandler(routerGroup fiber.Router, validator *validator.Validate, productUseCase productusecase.ProductUsecaseItf) {
+func NewProductHandler(routerGroup fiber.Router, validator *validator.Validate, productUseCase productusecase.ProductUsecaseItf, middleware middleware.MiddlewareI) {
 	handler := ProductHandler{
 		Validator:      validator,
 		ProductUseCase: productUseCase,
+		Middleware:     middleware,
 	}
 
 	routerGroup = routerGroup.Group("/products")
 
-	routerGroup.Get("/", handler.GetAllProducts)
-	routerGroup.Get("/:id", handler.GetSpecificProduct)
-	routerGroup.Post("/", handler.CreateProduct)
-	routerGroup.Patch("/:id", handler.UpdateProduct)
-	routerGroup.Delete("/:id", handler.DeleteProduct)
+	routerGroup.Get("/", middleware.Authentication, handler.GetAllProducts)
+	routerGroup.Get("/:id", middleware.Authentication, handler.GetSpecificProduct)
+	routerGroup.Post("/", middleware.Authentication, middleware.Authorization, handler.CreateProduct)
+	routerGroup.Patch("/:id", middleware.Authentication, middleware.Authorization, handler.UpdateProduct)
+	routerGroup.Delete("/:id", middleware.Authentication, middleware.Authorization, handler.DeleteProduct)
+
 }
 
 func (h ProductHandler) GetSpecificProduct(ctx *fiber.Ctx) error {
