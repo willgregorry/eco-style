@@ -35,3 +35,17 @@ func (p Product) ParseToDTO() dto.ResponseCreateProduct {
 		Condition:       p.Condition,
 	}
 }
+
+func (p Product) ParseToDTOGet() dto.ResponseGetProduct {
+	return dto.ResponseGetProduct{
+		ProductName:     p.ProductName,
+		ProductBrand:    p.ProductBrand,
+		ProductMaterial: p.ProductMaterial,
+		ProductSize:     p.ProductSize,
+		Description:     p.Description,
+		Price:           p.Price,
+		Stock:           p.Stock,
+		Category:        p.Category,
+		Condition:       p.Condition,
+	}
+}

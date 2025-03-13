@@ -12,6 +12,18 @@ type RequestCreateProduct struct {
 	Condition       string `json:"condition" validate:"required"`
 }
 
+type RequestUpdateProduct struct {
+	ProductName     string `json:"product_name" validate:""`
+	ProductBrand    string `json:"product_brand" validate:""`
+	ProductMaterial string `json:"product_material" validate:""`
+	ProductSize     string `json:"product_size" validate:""`
+	Description     string `json:"description" validate:""`
+	Price           int64  `json:"price" validate:""`
+	Stock           int8   `json:"stock" validate:""`
+	Category        string `json:"category" validate:""`
+	Condition       string `json:"condition" validate:""`
+}
+
 type ResponseCreateProduct struct {
 	ProductName     string `json:"product_name"`
 	ProductBrand    string `json:"product_brand"`
