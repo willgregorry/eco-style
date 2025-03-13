@@ -5,6 +5,8 @@ import (
 	"errors"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -26,20 +28,24 @@ type Claims struct {
 
 func NewJWT(env *env.Env) JWTI {
 	secretKey := env.JWTSecret
-	expiredTime := env.JWTExpired
+	expiredTime, err := strconv.Atoi(os.Getenv("JWT_EXPIRED"))
+	if err != nil {
+		return nil
+	}
 
 	return &JWT{
 		secretKey:   secretKey,
-		expiredTime: expiredTime,
+		expiredTime: time.Duration(expiredTime) * time.Hour,
 	}
 }
 
 func (j *JWT) GenerateToken(userID uuid.UUID, isAdmin bool) (string, error) {
 
 	claims := Claims{
-		ID: userID,
+		ID:      userID,
+		IsAdmin: isAdmin,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(j.expiredTime * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(j.expiredTime)),
 		},
 	}
 
@@ -56,9 +62,11 @@ func (j *JWT) GenerateToken(userID uuid.UUID, isAdmin bool) (string, error) {
 func (j *JWT) ValidateToken(tokenString string) (uuid.UUID, bool, error) {
 	var claims Claims
 
-	token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(j.secretKey), nil
-	})
+	token, err := jwt.ParseWithClaims(tokenString, &claims,
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(j.secretKey), nil
+		})
+
 	if err != nil {
 		return uuid.Nil, false, err
 	}

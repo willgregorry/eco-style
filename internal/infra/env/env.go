@@ -3,7 +3,6 @@ package env
 import (
 	"github.com/caarlos0/env/v11"
 	"github.com/joho/godotenv"
-	"time"
 )
 
 type Env struct {
@@ -15,8 +14,8 @@ type Env struct {
 	DBName     string `env:"DB_NAME"`
 	DBPort     string `env:"DB_PORT"`
 
-	JWTSecret  string        `env:"JWT_SECRET"`
-	JWTExpired time.Duration `env:"JWT_EXPIRED"`
+	JWTSecret  string `env:"JWT_SECRET"`
+	JWTExpired string `env:"JWT_EXPIRED"`
 }
 
 func New() (*Env, error) {
