@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"os"
 	"strconv"
 )
@@ -54,13 +53,6 @@ func Start() error {
 	middleware := middleware.NewMiddleware(jwt)
 
 	app := fiber.New()
-	app.Use(cors.New(cors.Config{
-		AllowHeaders:     "*",
-		AllowOrigins:     "*",
-		AllowMethods:     "*",
-		ExposeHeaders:    "*",
-		AllowCredentials: true,
-	}))
 
 	v1 := app.Group("/api/v1")
 
