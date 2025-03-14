@@ -51,7 +51,9 @@ func (h *UserHandler) RegisterUser(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.JSON(http.StatusOK)
+	return ctx.JSON(fiber.Map{
+		"message": "Account registered",
+	})
 
 }
 
@@ -75,7 +77,8 @@ func (h *UserHandler) Login(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.JSON(fiber.Map{
-		"token": token,
+		"message": "Login Success",
+		"token":   token,
 	})
 
 }
