@@ -28,7 +28,7 @@ func (r ProductMySQL) GetAllProducts(products *[]entity.Product) error {
 }
 
 func (r ProductMySQL) GetSpecificProduct(products *entity.Product) error {
-	return r.db.First(products).Error
+	return r.db.Debug().Where("product_name=?", products.ProductName).First(products).Error
 }
 
 func (r ProductMySQL) Update(product *entity.Product) error {

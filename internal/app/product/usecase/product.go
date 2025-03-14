@@ -10,7 +10,7 @@ import (
 type ProductUsecaseItf interface {
 	GetAllProducts() (*[]dto.ResponseGetProduct, error)
 	CreateProduct(request dto.RequestCreateProduct) (dto.ResponseCreateProduct, error)
-	GetSpecificProduct(id uuid.UUID) (dto.ResponseGetProduct, error)
+	GetSpecificProduct(productName string) (dto.ResponseGetProduct, error)
 	UpdateProduct(productID uuid.UUID, request dto.RequestUpdateProduct) error
 	DeleteProduct(productID uuid.UUID) error
 }
@@ -67,10 +67,10 @@ func (u ProductUsecase) CreateProduct(request dto.RequestCreateProduct) (dto.Res
 
 }
 
-func (u ProductUsecase) GetSpecificProduct(id uuid.UUID) (dto.ResponseGetProduct, error) {
+func (u ProductUsecase) GetSpecificProduct(productName string) (dto.ResponseGetProduct, error) {
 
 	product := &entity.Product{
-		ID: id,
+		ProductName: productName,
 	}
 
 	err := u.ProductRepository.GetSpecificProduct(product)

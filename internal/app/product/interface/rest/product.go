@@ -26,7 +26,7 @@ func NewProductHandler(routerGroup fiber.Router, validator *validator.Validate, 
 	routerGroup = routerGroup.Group("/products")
 
 	routerGroup.Get("/", middleware.Authentication, handler.GetAllProducts)
-	routerGroup.Get("/:id", middleware.Authentication, handler.GetSpecificProduct)
+	routerGroup.Get("/:product_name", middleware.Authentication, handler.GetSpecificProduct)
 	routerGroup.Post("/", middleware.Authentication, middleware.SellerAuthorization, handler.CreateProduct)
 	routerGroup.Patch("/:id", middleware.Authentication, middleware.SellerAuthorization, handler.UpdateProduct)
 	routerGroup.Delete("/:id", middleware.Authentication, middleware.SellerAuthorization, handler.DeleteProduct)
@@ -35,12 +35,12 @@ func NewProductHandler(routerGroup fiber.Router, validator *validator.Validate, 
 
 func (h ProductHandler) GetSpecificProduct(ctx *fiber.Ctx) error {
 
-	productID, err := uuid.Parse(ctx.Params("id"))
-	if err != nil {
-		return fiber.NewError(fiber.StatusUnprocessableEntity, "ProductID harus UUID")
+	parameter := ctx.Params("product_name")
+	if parameter == "" {
+		return fiber.NewError(fiber.StatusUnprocessableEntity, "Product tidak ditemukan")
 	}
 
-	res, err := h.ProductUseCase.GetSpecificProduct(productID)
+	res, err := h.ProductUseCase.GetSpecificProduct(parameter)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -69,7 +69,6 @@ func (h *ProductHandler) CreateProduct(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	// validate
 	err = h.Validator.Struct(request)
 	if err != nil {
 		return err
