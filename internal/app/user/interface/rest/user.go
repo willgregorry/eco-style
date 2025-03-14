@@ -26,7 +26,7 @@ func NewUserHandler(routerGroup fiber.Router, validator *validator.Validate, use
 
 	routerGroup = routerGroup.Group("/users")
 
-	routerGroup.Get("/users", middleware.Authentication, middleware.Authorization, handler.GetAllUsers)
+	routerGroup.Get("/", middleware.Authentication, middleware.Authorization, handler.GetAllUsers)
 	routerGroup.Delete("/:id", middleware.Authentication, middleware.Authorization, handler.DeleteUser)
 	routerGroup.Post("/register", handler.RegisterUser)
 	routerGroup.Post("/login", handler.Login)
