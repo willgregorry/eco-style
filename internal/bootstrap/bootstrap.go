@@ -62,7 +62,7 @@ func Start() error {
 
 	userRepository := userrepository.NewUserMySQL(database)
 	userUseCase := userusecase.NewUserUsecase(userRepository, jwt)
-	userhandler.NewUserHandler(v1, val, userUseCase)
+	userhandler.NewUserHandler(v1, val, userUseCase, middleware)
 
 	appPort, _ := strconv.Atoi(config.AppPort)
 	return app.Listen(fmt.Sprintf(":%d", appPort))

@@ -18,6 +18,18 @@ type LoginUser struct {
 	Password string `json:"password" validate:"required"`
 }
 
+type RequestGetUsers struct {
+	ID          uuid.UUID
+	Name        string
+	Email       string
+	Password    string
+	PhoneNumber string
+	Address     string
+	Role        string
+	IsAdmin     bool
+	GoogleID    string
+}
+
 type UserParam struct {
 	Id    uuid.UUID
 	Email string

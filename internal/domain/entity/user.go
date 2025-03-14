@@ -20,15 +20,15 @@ type User struct {
 	GoogleID    string    `gorm:"type:varchar(100);not null"`
 }
 
-func (p User) ParseToDTO() dto.RegisterUser {
-	return dto.RegisterUser{
-		Name:        p.Name,
-		Email:       p.Email,
-		Password:    p.Password,
-		PhoneNumber: p.PhoneNumber,
-		Address:     p.Address,
-		Role:        p.Role,
-		IsAdmin:     p.IsAdmin,
-		GoogleID:    p.GoogleID,
+func (u User) ParseToDTOGetUsers() dto.RequestGetUsers {
+	return dto.RequestGetUsers{
+		ID:          u.ID,
+		Name:        u.Name,
+		Email:       u.Email,
+		Password:    u.Password,
+		PhoneNumber: u.PhoneNumber,
+		Address:     u.Address,
+		Role:        u.Role,
+		IsAdmin:     u.IsAdmin,
 	}
 }

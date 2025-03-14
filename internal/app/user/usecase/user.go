@@ -13,6 +13,8 @@ import (
 type UserUsecaseItf interface {
 	Register(user dto.RegisterUser) error
 	Login(user dto.LoginUser) (string, error)
+	DeleteUser(userID uuid.UUID) error
+	GetAllUsers() (*[]dto.RequestGetUsers, error)
 }
 
 type UserUsecase struct {
@@ -25,6 +27,24 @@ func NewUserUsecase(userRepo repository.UserMySQLItf, jwt jwt.JWTI) UserUsecaseI
 		userRepo: userRepo,
 		jwt:      jwt,
 	}
+}
+
+func (u UserUsecase) GetAllUsers() (*[]dto.RequestGetUsers, error) {
+
+	users := new([]entity.User)
+
+	err := u.userRepo.GetAll(users)
+	if err != nil {
+		return nil, err
+	}
+
+	res := make([]dto.RequestGetUsers, len(*users))
+	for i, temp := range *users {
+		res[i] = temp.ParseToDTOGetUsers()
+	}
+
+	return &res, nil
+
 }
 
 func (u *UserUsecase) Register(register dto.RegisterUser) error {
@@ -73,4 +93,13 @@ func (u *UserUsecase) Login(login dto.LoginUser) (string, error) {
 
 	return token, nil
 
+}
+
+func (u UserUsecase) DeleteUser(userID uuid.UUID) error {
+
+	user := &entity.User{
+		ID: userID,
+	}
+
+	return u.userRepo.Delete(user)
 }
