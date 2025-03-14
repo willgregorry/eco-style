@@ -28,6 +28,7 @@ func NewUserHandler(routerGroup fiber.Router, validator *validator.Validate, use
 
 	routerGroup.Get("/", middleware.Authentication, middleware.Authorization, handler.GetAllUsers)
 	routerGroup.Delete("/:id", middleware.Authentication, middleware.Authorization, handler.DeleteUser)
+	routerGroup.Get("/:id", middleware.Authentication, handler.GetUserByID)
 	routerGroup.Post("/register", handler.RegisterUser)
 	routerGroup.Post("/login", handler.Login)
 
@@ -111,4 +112,18 @@ func (h *UserHandler) GetAllUsers(ctx *fiber.Ctx) error {
 	return ctx.JSON(fiber.Map{
 		"message": res,
 	})
+}
+
+func (h *UserHandler) GetUserByID(ctx *fiber.Ctx) error {
+	user, err := uuid.Parse(ctx.Params("id"))
+	if err != nil {
+		return fiber.NewError(fiber.StatusUnprocessableEntity, "UserID harus UUID")
+	}
+
+	res, err := h.UserUseCase.GetSpecificUser(user)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return ctx.Status(http.StatusOK).JSON(res)
 }

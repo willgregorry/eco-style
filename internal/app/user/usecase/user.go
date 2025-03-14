@@ -15,6 +15,7 @@ type UserUsecaseItf interface {
 	Login(user dto.LoginUser) (string, error)
 	DeleteUser(userID uuid.UUID) error
 	GetAllUsers() (*[]dto.RequestGetUsers, error)
+	GetSpecificUser(id uuid.UUID) (dto.RequestGetUsername, error)
 }
 
 type UserUsecase struct {
@@ -102,4 +103,17 @@ func (u UserUsecase) DeleteUser(userID uuid.UUID) error {
 	}
 
 	return u.userRepo.Delete(user)
+}
+
+func (u UserUsecase) GetSpecificUser(id uuid.UUID) (dto.RequestGetUsername, error) {
+	user := &entity.User{
+		ID: id,
+	}
+
+	err := u.userRepo.GetSpecificUsername(user)
+	if err != nil {
+		return dto.RequestGetUsername{}, err
+	}
+
+	return user.ParseToDTOGetUsername(), err
 }

@@ -32,3 +32,9 @@ func (u User) ParseToDTOGetUsers() dto.RequestGetUsers {
 		IsAdmin:     u.IsAdmin,
 	}
 }
+
+func (u User) ParseToDTOGetUsername() dto.RequestGetUsername {
+	return dto.RequestGetUsername{
+		Name: u.Name,
+	}
+}

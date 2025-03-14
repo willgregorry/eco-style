@@ -12,6 +12,7 @@ type UserMySQLItf interface {
 	Create(user *entity.User) error
 	Get(user *entity.User, userParam dto.UserParam) error
 	GetAll(user *[]entity.User) error
+	GetSpecificUsername(user *entity.User) error
 	Delete(user *entity.User) error
 }
 
@@ -33,6 +34,10 @@ func (r *UserMySQL) Get(user *entity.User, userParam dto.UserParam) error {
 
 func (r *UserMySQL) GetAll(user *[]entity.User) error {
 	return r.db.Find(user).Error
+}
+
+func (r *UserMySQL) GetSpecificUsername(user *entity.User) error {
+	return r.db.First(user, user.ID).Error
 }
 
 func (r *UserMySQL) Delete(user *entity.User) error {

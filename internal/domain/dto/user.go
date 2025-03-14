@@ -30,6 +30,10 @@ type RequestGetUsers struct {
 	GoogleID    string
 }
 
+type RequestGetUsername struct {
+	Name string
+}
+
 type UserParam struct {
 	Id    uuid.UUID
 	Email string
