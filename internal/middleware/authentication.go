@@ -17,7 +17,7 @@ func (m *Middleware) Authentication(ctx *fiber.Ctx) error {
 	bearerToken := authToken[0]
 	token := strings.Split(bearerToken, " ")
 
-	userID, isAdmin, err := m.jwt.ValidateToken(token[1])
+	userID, isAdmin, role, err := m.jwt.ValidateToken(token[1])
 	if err != nil {
 		return ctx.Status(401).JSON(fiber.Map{
 			"message": "Invalid token",
@@ -26,6 +26,7 @@ func (m *Middleware) Authentication(ctx *fiber.Ctx) error {
 
 	ctx.Locals("userID", userID)
 	ctx.Locals("isAdmin", isAdmin)
+	ctx.Locals("role", role)
 
 	return ctx.Next()
 }

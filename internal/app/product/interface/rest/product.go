@@ -27,9 +27,9 @@ func NewProductHandler(routerGroup fiber.Router, validator *validator.Validate, 
 
 	routerGroup.Get("/", middleware.Authentication, handler.GetAllProducts)
 	routerGroup.Get("/:id", middleware.Authentication, handler.GetSpecificProduct)
-	routerGroup.Post("/", middleware.Authentication, middleware.Authorization, handler.CreateProduct)
-	routerGroup.Patch("/:id", middleware.Authentication, middleware.Authorization, handler.UpdateProduct)
-	routerGroup.Delete("/:id", middleware.Authentication, middleware.Authorization, handler.DeleteProduct)
+	routerGroup.Post("/", middleware.Authentication, middleware.SellerAuthorization, handler.CreateProduct)
+	routerGroup.Patch("/:id", middleware.Authentication, middleware.SellerAuthorization, handler.UpdateProduct)
+	routerGroup.Delete("/:id", middleware.Authentication, middleware.SellerAuthorization, handler.DeleteProduct)
 
 }
 

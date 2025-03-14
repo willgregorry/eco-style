@@ -11,8 +11,8 @@ import (
 )
 
 type JWTI interface {
-	GenerateToken(userID uuid.UUID, isAdmin bool) (string, error)
-	ValidateToken(tokenString string) (uuid.UUID, bool, error)
+	GenerateToken(userID uuid.UUID, isAdmin bool, role string) (string, error)
+	ValidateToken(tokenString string) (uuid.UUID, bool, string, error)
 }
 
 type JWT struct {
@@ -23,6 +23,7 @@ type JWT struct {
 type Claims struct {
 	ID      uuid.UUID
 	IsAdmin bool
+	Role    string
 	jwt.RegisteredClaims
 }
 
@@ -39,11 +40,12 @@ func NewJWT(env *env.Env) JWTI {
 	}
 }
 
-func (j *JWT) GenerateToken(userID uuid.UUID, isAdmin bool) (string, error) {
+func (j *JWT) GenerateToken(userID uuid.UUID, isAdmin bool, role string) (string, error) {
 
 	claims := Claims{
 		ID:      userID,
 		IsAdmin: isAdmin,
+		Role:    role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(j.expiredTime)),
 		},
@@ -59,7 +61,7 @@ func (j *JWT) GenerateToken(userID uuid.UUID, isAdmin bool) (string, error) {
 	return tokenString, nil
 }
 
-func (j *JWT) ValidateToken(tokenString string) (uuid.UUID, bool, error) {
+func (j *JWT) ValidateToken(tokenString string) (uuid.UUID, bool, string, error) {
 	var claims Claims
 
 	token, err := jwt.ParseWithClaims(tokenString, &claims,
@@ -68,16 +70,17 @@ func (j *JWT) ValidateToken(tokenString string) (uuid.UUID, bool, error) {
 		})
 
 	if err != nil {
-		return uuid.Nil, false, err
+		return uuid.Nil, false, "", err
 	}
 
 	if !token.Valid {
-		return uuid.Nil, false, errors.New("invalid token")
+		return uuid.Nil, false, "", errors.New("invalid token")
 	}
 
 	userID := claims.ID
 	isAdmin := claims.IsAdmin
+	role := claims.Role
 
-	return userID, isAdmin, nil
+	return userID, isAdmin, role, nil
 
 }
