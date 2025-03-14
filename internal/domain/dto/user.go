@@ -6,10 +6,10 @@ type RegisterUser struct {
 	Name        string `json:"name" validate:"required"`
 	Email       string `json:"email" validate:"required,email"`
 	Password    string `json:"password" validate:"required"`
-	PhoneNumber string `json:"phone_number"`
-	Address     string `json:"address"`
-	Role        string `json:"role"`
-	IsAdmin     bool   `json:"is_admin"`
+	PhoneNumber string `json:"phone_number" validate:"omitempty"`
+	Address     string `json:"address" validate:"omitempty"`
+	Role        string `json:"role" validate:"omitempty"`
+	IsAdmin     bool   `json:"is_admin" validate:"omitempty"`
 	GoogleID    string `json:"omitempty" validate:"omitempty,gte=1,lte=255"`
 }
 
