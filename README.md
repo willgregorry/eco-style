@@ -1,13 +1,16 @@
+# 🌿 EcoStyle – Sustainable Fashion Platform
 
-# EcoStyle “Sustainable Fashion Platform”
+EcoStyle is a digital platform offering comprehensive solutions for the sustainable fashion industry. Embracing the principles of reuse, repair, and responsible fashion, EcoStyle serves as an ecosystem connecting users with various sustainable fashion services.
 
-EcoStyle adalah platform digital yang menghadirkan solusi menyeluruh bagi industri fashion berkelanjutan. Dengan mengusung prinsip reuse, repair, dan responsible fashion, EcoStyle menjadi ekosistem yang menghubungkan pengguna dengan berbagai layanan fashion berkelanjutan.
+## ✨ Features
 
-## What are the feature?
-Untuk menanggulangi ini aplikasi ini menyediakan fitur sebagai berikut:
+- **Sustainable Fashion Marketplace**: Connect with brands focusing on sustainable and preloved fashion items.
+- **Clothing Repair Services**: Access services aimed at reducing waste by repairing garments.
+- **RentWear**: High-quality clothing rental feature promoting reuse.
+- **Store & Exhibition Finder**: Locate sustainable fashion stores and events in your area.
 
-- Marketplace untuk brand sustainable fashion & preloved
-- Layanan perbaikan pakaian untuk mengurangi limbah
-- Fitur RentWear untuk penyewaan pakaian berkualitas tinggi
-- Store & Exhibition Finder untuk menemukan toko dan event fashion berkelanjutan
+## 🛠️ Tech Stack
 
+- **Programming Language**: Go (Golang)
+- **Containerization**: Docker
+- **Build Automation**: Makefile
